@@ -1,0 +1,110 @@
+.bh-menu-container {
+  width: 16rem;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px 0 var(--messages-shadow);
+}
+
+.bh-logo-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--table-border-color-light);
+}
+
+.bh-logo {
+  height: 8rem;
+  width: auto;
+}
+
+.bh-nav {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bh-menu-item {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.bh-menu-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.bh-menu-item-active {
+  background-color: var(--button-bg-color);
+  color: #ffffff;
+}
+
+.bh-menu-item-active:hover {
+  background-color: #cc1f1f;
+}
+
+.bh-menu-item-inactive {
+  color: var(--messages-label-color);
+}
+
+.bh-menu-item-inactive:hover {
+  background-color: #f3f4f6;
+}
+
+.bh-menu-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.bh-chevron-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.bh-menu-text {
+  font-weight: 500;
+}
+
+.bh-bottom-section {
+  padding: 1rem;
+  border-top: 1px solid var(--table-border-color-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bh-agent-name {
+  font-size: 0.875rem;
+  color: var(--messages-label-color);
+  font-weight: 500;
+}
+
+.bh-logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--button-bg-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.bh-logout-button:hover {
+  color: #cc1f1f;
+}
+
+.bh-logout-icon {
+  width: 1rem;
+  height: 1rem;
+}

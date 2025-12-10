@@ -1,0 +1,272 @@
+dashboard-container {
+  padding: 20px;
+  background-color: var(--dashboard-bg-color);
+  min-height: 100vh;
+}
+
+.dashboard-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--dashboard-title-color);
+  margin-bottom: 30px;
+}
+
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px var(--metrics-card-shadow);
+}
+
+.metric-card.teal {
+  background-color: var(--metric-teal-color);
+}
+
+.metric-card.coral {
+  background-color: var(--metric-coral-color);
+}
+
+.metric-card.orange {
+  background-color: var(--metric-orange-color);
+}
+
+.metric-card.pink {
+  background-color: var(--metric-pink-color);
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--metric-label-color);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--metric-value-color);
+}
+
+/* Messages Section */
+.messages-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px var(--messages-shadow);
+}
+
+.messages-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--messages-title-color);
+  /* margin-bottom: 15px; */
+  margin-left:-5%;
+
+}
+
+.messages-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.message-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot.black {
+  background-color: var(--dot-black-color);
+}
+.dot.teal {
+  background-color: var(--dot-teal-color);
+}
+.dot.red {
+  background-color: var(--dot-red-color);
+}
+.dot.orange {
+  background-color: var(--dot-orange-color);
+}
+
+.message-stat .label {
+  font-size: 12px;
+  color: var(--messages-label-color);
+}
+
+.message-stat .value {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--messages-value-color);
+}
+
+/* Charts Section */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px var(--chart-card-shadow);
+}
+
+.chart-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--chart-card-title-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Bar Chart */
+.bar-chart {
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.bar {
+  width: 20px;
+  background-color: var(--bar-chart-color);
+  border-radius: 2px 2px 0 0;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-around;
+  font-size: 10px;
+  color: var(--chart-label-color);
+}
+
+/* Donut Chart */
+.donut-chart {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--legend-item-color);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.black {
+  background-color: var(--legend-dot-black-color);
+}
+.legend-dot.blue {
+  background-color: var(--legend-dot-blue-color);
+}
+.legend-dot.green {
+  background-color: var(--legend-dot-green-color);
+}
+.legend-dot.dark-blue {
+  background-color: var(--legend-dot-dark-blue-color);
+}
+.legend-dot.red {
+  background-color: var(--legend-dot-red-color);
+}
+
+/* Pie Chart */
+.pie-chart {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+    align-items: flex-start; 
+}
+.legend-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.legend-dot.green {
+  background-color: #10b981; /* le même vert que ton stroke */
+}
+
+.legend-dot.blue {
+  background-color: #3b82f6; /* le même bleu que ton stroke */
+}
+
+.legend-dot.gray {
+  background-color: #6b7280; /* le même gris que ton stroke */
+}
+
+.pie-legend .legend-item {
+  justify-content: space-between;
+}
+
+.percentage {
+  font-weight: 600;
+  color: var(--pie-percentage-color);
+}
+
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .messages-stats {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}

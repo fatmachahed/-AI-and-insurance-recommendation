@@ -1,0 +1,980 @@
+[
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "BRIS DE GLACE",
+    "produit": "BRIS DE GLACE",
+    "raison": "Exclusion des dommages causés par intempéries ou troubles sociaux",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['GRÊLE','TEMPÊTE','MANIFESTATION','ÉMEUTE','GRÈVE'].some(k => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(k)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "BRIS DE GLACE",
+    "produit": "BRIS DE GLACE",
+    "raison": "Exclusion des dommages pendant travaux ou défaut d'entretien",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['TRAVAUX','MAINTENANCE'].some(k => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(k)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "BRIS DE GLACE",
+    "produit": "BRIS DE GLACE",
+    "raison": "Déchéance du droit à indemnité pour déclaration tardive (>5 jours)",
+    "condition": "(data) => { if (!data.DATE_DECLARATION || !data.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2)/(1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "VOL",
+    "produit": "VOL AVEC EFFRACTION DES MARCHANDISES DE TOUTE NATURE",
+    "raison": "Exclusion en cas de complicité interne",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['EMPLOYE','GESTIONNAIRE'].some(r => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(r)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "VOL",
+    "produit": "TOUS",
+    "raison": "Déchéance du droit à indemnité pour déclaration tardive (>2 jours)",
+    "condition": "(data) => { if (!data.DATE_DECLARATION || !data.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2)/(1000*60*60*24) > 2; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "VOL",
+    "produit": "TOUS",
+    "raison": "Exclusion pour troubles sociaux",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['GRÈVE','ÉMEUTE','MANIFESTATION'].some(k => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(k)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "DEGATS DES EAUX",
+    "produit": "DEGATS DES EAUX",
+    "raison": "Exclusion pour défaut d'entretien ou négligence",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['NÉGLIGENCE','VÉTUSTÉ'].some(k => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(k)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "DEGATS DES EAUX",
+    "produit": "DEGATS DES EAUX",
+    "raison": "Réduction pour déclaration tardive (>72h)",
+    "condition": "(data) => { if (!data.DATE_DECLARATION || !data.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2)/(1000*60*60*24) > 3; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "DEGATS DES EAUX",
+    "produit": "DEGATS DES EAUX",
+    "raison": "Exclusion des activités à risque hydrique",
+    "condition": "(data) => ['PISCICULTURE','AQUACULTURE'].some(p => (data.LIB_ACTIVITE || '').toUpperCase().includes(p) || (data.LIB_PROFESSION || '').toUpperCase().includes(p))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Exclusion des catastrophes naturelles",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['INONDATION','TREMBLEMENT DE TERRE','GLISSEMENT','AVALANCHE','OURAGAN'].some(word => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(word)))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Exclusion en cas de conduite sous influence",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(\"CONDUITE EN ÉTAT D'IVRESSE\"))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Déchéance du droit à assistance pour déclaration hors délai",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Exclusion des actes intentionnels",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('ACTE INTENTIONNEL'))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Exclusion en participation à des compétitions",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('PARTICIPATION COMPÉTITION'))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE DES VEHICULES",
+    "produit": "ASSISTANCE DES VEHICULES",
+    "raison": "Exclusion des dommages nucléaires",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['NUCLÉAIRE','RADIOACTIVITÉ'].some(w => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(w)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE RISQUES SIMPLE",
+    "produit": "INCENDIE RISQUES SIMPLE",
+    "raison": "Exclusion des dommages causés par catastrophes naturelles",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['TREMBLEMENT DE TERRE','INONDATION','RAZ-DE-MARÉE'].some(mot => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(mot)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE RISQUES SIMPLE",
+    "produit": "INCENDIE RISQUES SIMPLE",
+    "raison": "Exclusion des sites industriels à haut risque",
+    "condition": "(data) => ['LABORATOIRE','DÉPÔT','CHIMIQUE'].some(act => (data.LIB_ACTIVITE || '').toUpperCase().includes(act))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS OCCUPANT",
+    "raison": "Déchéance pour déclaration tardive (>5 jours)",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS OCCUPANT",
+    "raison": "Limitation d'indemnisation pour objets précieux",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['BIJOUX','TABLEAUX'].some(obj => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(obj)))"
+  },
+  {
+    "branche": "CREDITS COMMERCIAUX B.H.",
+    "sous_branche": "CREDITS COMMERCIAUX B.H.",
+    "produit": "CREDITS COMMERCIAUX B.H.",
+    "raison": "Exclusion des dommages électriques non liés à un incendie",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('DOMMAGE_ELECTRIQUE') && !(s.OBSERVATION_SINISTRE || '').toUpperCase().includes('INCENDIE'))"
+  },
+  {
+    "branche": "INCENDIE RISQUES INDUSTRIEL",
+    "sous_branche": "INCENDIE RISQUES INDUSTRIEL",
+    "produit": "INCENDIE RISQUES INDUSTRIEL",
+    "raison": "Exclusion explosions dans dépôts d'explosifs",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('EXPLOSION') && (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('DÉPÔT'))"
+  },
+  {
+    "branche": "INCENDIE RISQUES INDUSTRIEL",
+    "sous_branche": "INCENDIE RISQUES INDUSTRIEL",
+    "produit": "INCENDIE RISQUES INDUSTRIEL",
+    "raison": "Exclusion des dommages nucléaires/radioactifs",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['NUCLÉAIRE','RADIOACTIVITÉ'].some(w => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(w)))"
+  },
+  {
+    "branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "sous_branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "produit": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "raison": "Déchéance pour déclaration hors délai (5 jours)",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "CREDITS COMMERCIAUX B.H.",
+    "sous_branche": "CREDITS COMMERCIAUX B.H.",
+    "produit": "CREDITS COMMERCIAUX B.H.",
+    "raison": "Exclusion destruction espèces/titres/billets",
+    "condition": "(data) => ['ESPÈCES','TITRES','BILLETS'].some(word => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(word))"
+  },
+  {
+    "branche": "MULTIRISQUES PROFESSIONNELLES",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES",
+    "produit": "MULTIRISQUES PROFESSIONNELLES",
+    "raison": "Franchise de 20% avec minimum 50 DT",
+    "condition": "(data) => ['TEMPETE','GRELE'].some(kw => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "produit": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "raison": "Exclusion des dommages électriques non liés à un incendie",
+    "condition": "(data) => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('DOMMAGE ÉLECTRIQUE') && !(data.OBSERVATION_SINISTRE || '').toUpperCase().includes('INCENDIE')"
+  },
+  {
+    "branche": "MULTIRISQUE HOTELIER",
+    "sous_branche": "MULTIRISQUE HOTELIER",
+    "produit": "MULTIRISQUE HOTELIER",
+    "raison": "Exclusion explosions dans dépôts d'explosifs",
+    "condition": "(data) => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('EXPLOSION') && (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('DÉPÔT')"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES",
+    "produit": "MULTIRISQUE HOTELIER",
+    "raison": "Exclusion des dommages tempête non certifiés",
+    "condition": "(data) => (data.NATURE_SINISTRE || '').toUpperCase().includes('TEMPÊTE') && Number(data.VITESSE_VENT_ENREGISTREE || 0) < 100"
+  },
+  {
+    "branche": "MULTIRISQUES PROFESSIONNELLES",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES",
+    "produit": "MULTIRISQUES PROFESSIONNELLES",
+    "raison": "Exclusion des dommages nucléaires/radioactifs",
+    "condition": "(data) => ['NUCLÉAIRE','RADIOACTIVITÉ'].some(k => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(k))"
+  },
+  {
+    "branche": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "produit": "MULTIRISQUES PROFESSIONNELLES CENTRALISE",
+    "raison": "Déchéance pour déclaration hors délai (5 jours)",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES PROFESSIONNELLES",
+    "produit": "MULTIRISQUE HOTELIER",
+    "raison": "Exclusion destruction espèces/titres/billets",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['ESPÈCES','TITRES','BILLETS','ARGENT'].some(kw => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS NON OCCUPANT",
+    "raison": "Exclusion vice construction/défaut entretien",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => ['VICE CONSTRUCTION','DÉFAUT ENTRETIEN','CONSTRUCTION DÉFECTUEUSE'].some(kw => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS NON OCCUPANT",
+    "raison": "Exclusion pour vice de construction ou défaut d'entretien",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(s => (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('VICE CONSTRUCTION') || (s.OBSERVATION_SINISTRE || '').toUpperCase().includes('DÉFAUT ENTRETIEN'))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS OCCUPANT",
+    "raison": "Application de la règle proportionnelle en cas de sous-assurance",
+    "condition": "(data) => Number(data.VALEUR_REELLE || 0) > Number(data.CAPITAL_ASSURE || 0)"
+  },
+  {
+    "branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "sous_branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "produit": "PERTES D EXPLOITATION APRES INCENDIE",
+    "raison": "Exclusion locaux occupés/vacants",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(sinistre => ['OCCUPE PAR ASSURE','LOCAL VACANT','BÂTIMENT VACANT'].some(kw => (sinistre.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw)))"
+  },
+  {
+    "branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "sous_branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "produit": "PERTES D EXPLOITATION APRES INCENDIE",
+    "raison": "Exclusion des catastrophes naturelles",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(sinistre => ['TREMBLEMENT TERRE','INONDATION','OURAGAN','CATACLYSME'].some(word => (sinistre.NATURE_SINISTRE || '').toUpperCase().includes(word)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE RISQUES AGRICOLES",
+    "produit": "INCENDIE RISQUES AGRICOLES",
+    "raison": "Exclusion explosions dépôts explosifs",
+    "condition": "(data) => (data.NATURE_SINISTRE || '').toUpperCase().includes('EXPLOSION') && ['DÉPÔT EXPLOSIFS','ENTREPÔT EXPLOSIFS'].some(kw => (data.LIEU_ACCIDENT || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS OCCUPANT (BH)",
+    "raison": "Déchéance déclaration tardive",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const dateDecl = new Date(data.DATE_DECLARATION); const dateSurv = new Date(data.DATE_SURVENANCE); const diffDays = (dateDecl - dateSurv) / (1000 * 60 * 60 * 24); return (data.LIB_TYPE_SINISTRE || '').toUpperCase().includes('VOL') ? diffDays > 2 : diffDays > 5; }"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS OCCUPANT AMICALE",
+    "raison": "Plafonnement bijoux/objets précieux",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(sinistre => ['BIJOUX','TABLEAU','OBJET PRECIEUX','COLLECTION'].some(kw => (sinistre.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw)))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "PERTES D EXPLOITATIONS APRES INCENDIE",
+    "produit": "PERTES D EXPLOITATION APRES INCENDIE",
+    "raison": "Exclusion catastrophes naturelles",
+    "condition": "(data) => ['TREMBLEMENT TERRE','INONDATION','OURAGAN','CATACLYSME'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "MULTIRISQUES HABITATIONS",
+    "produit": "MULTIRISQUES HABITATIONS NON OCCUPANT (SALIM)",
+    "raison": "Exclusion risques nucléaires",
+    "condition": "(data) => Array.isArray(data.sinistres) && data.sinistres.some(sinistre => (sinistre.NATURE_SINISTRE || '').toUpperCase().includes('NUCLÉAIRE') || (sinistre.OBSERVATION_SINISTRE || '').toUpperCase().includes('RADIOACTIVITÉ'))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE LOGEMENTS",
+    "produit": "INCENDIE LOGEMENTS BTE",
+    "raison": "Exclusion dommages électriques",
+    "condition": "(data) => (data.NATURE_SINISTRE || '').toUpperCase().includes('DOMMAGE ÉLECTRIQUE') && !(data.NATURE_SINISTRE || '').toUpperCase().includes('INCENDIE')"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE LOGEMENTS",
+    "produit": "INCENDIE LOGEMENTS BTE",
+    "raison": "Exclusion explosions dépôts explosifs",
+    "condition": "(data) => (data && data.NATURE_SINISTRE && data.LIEU_ACCIDENT) && data.NATURE_SINISTRE.toUpperCase().includes('EXPLOSION') && ['DÉPÔT EXPLOSIFS','ENTREPÔT EXPLOSIFS'].some(kw => data.LIEU_ACCIDENT.toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE LOGEMENTS",
+    "produit": "INCENDIE LOGEMENTS BTE",
+    "raison": "Déchéance déclaration tardive",
+    "condition": "(data) => { if (!data?.DATE_DECLARATION || !data?.DATE_SURVENANCE) return false; const dateDecl = new Date(data.DATE_DECLARATION); const dateSurv = new Date(data.DATE_SURVENANCE); const diffDays = (dateDecl - dateSurv) / (1000 * 60 * 60 * 24); return diffDays > 5; }"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE LOGEMENTS",
+    "produit": "INCENDIE LOGEMENTS",
+    "raison": "Exclusion dommages nucléaires",
+    "condition": "(data) => (data && data.NATURE_SINISTRE) && ['NUCLÉAIRE','RADIOACTIVITÉ','ATOMIQUE'].some(kw => data.NATURE_SINISTRE.toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE",
+    "produit": "INCENDIE LOGEMENTS BTE",
+    "raison": "Exclusion espèces/titres/billets",
+    "condition": "(data) => (data && data.NATURE_SINISTRE) && ['ESPÈCES','TITRES','BILLETS','ARGENT'].some(kw => data.NATURE_SINISTRE.toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "INCENDIE",
+    "sous_branche": "INCENDIE AUTRES",
+    "produit": "INCENDIE AUTRES",
+    "raison": "Exclusion explosions dépôts explosifs",
+    "condition": "(data) => (data && data.NATURE_SINISTRE && data.LIEU_ACCIDENT) && data.NATURE_SINISTRE.toUpperCase().includes('EXPLOSION') && ['DÉPÔT EXPLOSIFS','ENTREPÔT EXPLOSIFS'].some(kw => data.LIEU_ACCIDENT.toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS",
+    "raison": "Exclusion guerre civile/terrorisme",
+    "condition": "(data) => ['GUERRE','EMEUTE','TERRORISME','CONFLIT ARMÉ'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS",
+    "raison": "Exclusion sports dangereux",
+    "condition": "(data) => ['MOTOCYCLETTE','SPORTS AÉRIENS','ESCALADE','BOBSLEIGH','SPÉLÉOLOGIE'].some(kw => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS ASSOCIE AU CONTRAT AUTO",
+    "raison": "Exclusion sports dangereux",
+    "condition": "(data) => ['MOTOCYCLETTE','SPORTS AÉRIENS','ESCALADE','BOBSLEIGH','SPÉLÉOLOGIE'].some(kw => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS AMICALE",
+    "raison": "Exclusion sports dangereux",
+    "condition": "(data) => ['MOTOCYCLETTE','SPORTS AÉRIENS','ESCALADE','BOBSLEIGH','SPÉLÉOLOGIE'].some(kw => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS",
+    "raison": "Exclusion conditions médicales",
+    "condition": "(data) => ['SYNCOPE','APOPLEXIE','ÉPILEPSIE','MALADIE CERVEAU','AFFECTION CARDIAQUE'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS ASSOCIE AU CONTRAT AUTO",
+    "raison": "Exclusion conditions médicales",
+    "condition": "(data) => ['SYNCOPE','APOPLEXIE','ÉPILEPSIE','MALADIE CERVEAU','AFFECTION CARDIAQUE'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS AMICALE",
+    "raison": "Exclusion conditions médicales",
+    "condition": "(data) => ['SYNCOPE','APOPLEXIE','ÉPILEPSIE','MALADIE CERVEAU','AFFECTION CARDIAQUE'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS",
+    "raison": "Déchéance déclaration tardive",
+    "condition": "(data) => { const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS ASSOCIE AU CONTRAT AUTO",
+    "raison": "Déchéance déclaration tardive",
+    "condition": "(data) => { const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS AMICALE",
+    "raison": "Déchéance déclaration tardive",
+    "condition": "(data) => { const d1 = new Date(data.DATE_DECLARATION); const d2 = new Date(data.DATE_SURVENANCE); return (d1 - d2) / (1000*60*60*24) > 5; }"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS",
+    "raison": "Exclusion alcool/drogues",
+    "condition": "(data) => ['IVRESSE','ÉTHYLISME','DROGUES','STUPÉFIANTS'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS ASSOCIE AU CONTRAT AUTO",
+    "raison": "Exclusion alcool/drogues",
+    "condition": "(data) => ['IVRESSE','ÉTHYLISME','DROGUES','STUPÉFIANTS'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "INDIVIDUELLE ACCIDENTS",
+    "produit": "INDIVIDUELLE ACCIDENTS AMICALE",
+    "raison": "Exclusion alcool/drogues",
+    "condition": "(data) => ['IVRESSE','ÉTHYLISME','DROGUES','STUPÉFIANTS'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "RESPONSABILITE CIVILE",
+    "produit": "RC ENTREPRISE DE BATIMENT ET TRAVAUX PUBLIC",
+    "raison": "Exclusion pour dommages nucléaires",
+    "condition": "(data) => ['NUCLÉAIRE','RADIOACTIF'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "RESPONSABILITE CIVILE",
+    "produit": "RESPONSABILITE CIVILE",
+    "raison": "Exclusion des dommages causés par faute intentionnelle",
+    "condition": "(data) => (data.NATURE_SINISTRE || '').toUpperCase().includes('INTENTIONNEL')"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "RESPONSABILITE CIVILE",
+    "produit": "RESPONSABILITE CIVILE",
+    "raison": "Exclusion accidents impliquant conjoint/ascendants/descendants/employés",
+    "condition": "(data) => ['CONJOINT','ASCENDANT','DESCENDANT','EMPLOYÉ','SALARIÉ','HABITANT FOYER'].some(kw => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "RESPONSABILITE CIVILE",
+    "produit": "R.C MEDECIN",
+    "raison": "Exclusion pour faute lourde médicale",
+    "condition": "(data) => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('FAUTE LOURDE') && (data.NATURE_SINISTRE || '').toUpperCase().includes('MÉDICAL') && ['MÉDECINS LIBÉRAUX GÉNÉRALISTES','MÉDECINS LIBÉRAUX SPÉCIALISTES','MÉDECINS HOSPITALIERS SANS ACTIVITÉ LIBÉRALE','MEDECIN'].includes((data.LIB_PROFESSION || '').toUpperCase())"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "RESPONSABILITE CIVILE",
+    "produit": "R.C PHARMACIEN",
+    "raison": "Exclusion erreur de dispensation médicamenteuse",
+    "condition": "(data) => (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('MÉDICAMENT') && (data.OBSERVATION_SINISTRE || '').toUpperCase().includes('ERREUR') && ['PHARMACIENS LIBÉRAUX','PHARMACIENNE','PHARMACIENS SALARIÉS','PRÉPARATEURS EN PHARMACIE'].includes((data.LIB_PROFESSION || '').toUpperCase())"
+  },
+
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES - PLAN BASIQUE",
+    "raison": "Exclusion des conflits armés et actes terroristes (Article 5)",
+    "condition": "(data) => ['GUERRE','HOSTILITÉS','TERRORISME','SABOTAGE'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES MJSEP",
+    "raison": "Exclusion des grèves et troubles civils (Article 6)",
+    "condition": "(data) => ['GRÈVE','ÉMEUTE','MOUVEMENT POPULAIRE'].some(kw => (data.NATURE_SINISTRE || '').toUpperCase().includes(kw))"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES SERGAZ",
+    "raison": "Exclusion des zones géographiques à haut risque (Article 11)",
+    "condition": "(data) => ['CONFLIT_ARMÉ','ZONE_ÉPIDÉMIQUE','ZONE_CATASTROPHE_NATURELLE'].includes(data.ZONE_GEOGRAPHIQUE || '')"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES BH",
+    "raison": "Plafonnement des frais médicaux à 50 000€ (Article 30)",
+    "condition": "(data) => parseFloat(data.FRAIS_MEDICAUX || 0) > 50000"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES LEONI",
+    "raison": "Exclusion des maladies préexistantes non déclarées",
+    "condition": "(data) => (data.NATURE_SINISTRE || '').includes('MALADIE_PRÉEXISTANTE') && !(data.DECLARATION_MALADIE)"
+  },
+  {
+    "branche":"RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES - PLAN GOLDEN",
+    "raison": "Exclusion des accidents lors d'activités à haut risque",
+    "condition": "(data) => (data.ACTIVITE || '').includes('SPORT_EXTREME')"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES - PLAN ETUDIANT",
+    "raison": "Plafond de 10 000€ pour interruption de cursus",
+    "condition": "(data) => (parseFloat(data.MONTANT_INTERRUPTION_ETUDES) || 0) > 10000"
+  },
+  {
+    "branche": "RISQUES DIVERS",
+    "sous_branche": "ASSISTANCE EN VOYAGES",
+    "produit": "ASSISTANCES EN VOYAGES - PLAN ETUDIANT+",
+    "raison": "Couverture étendue aux objets électroniques",
+    "condition": "(data) => data.TYPE_OBJET_PERDU?.includes('ELECTRONIQUE') && (parseFloat(data.MONTANT_RECLAME) || 0) <= 1500"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "DHAMEN",
+    "raison": "Assurance collective pour crédits avec couverture décès, invalidité et incapacité de travail",
+    "condition": "(data) => data.LIB_PRODUIT?.includes('CREDIT') && (data.age || 0) >= 18 && (data.age || 0) <= 70"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "ASSUR SENIOR",
+    "raison": "Couverture adaptée aux emprunteurs âgés",
+    "condition": "(data) => (data.age || 0) >= 60 && (data.age || 0) <= 75"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "TEMPORAIRE DECES",
+    "raison": "Couverture décès temporaire pour responsabilités familiales",
+    "condition": "(data) => data.age < 65 && ['MARIE', 'DIVORCE'].includes((data.SITUATION_FAMILIALE || '').toUpperCase())"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "TEMPORAIRE DECES",
+    "raison": "Couverture pour professions techniques à risque",
+    "condition": "(data) => ['INGENIEUR','TECHNICIEN','ELECTRICIEN','CHIMISTE','SOUDEUR'].some(kw => (data.LIB_PROFESSION || '').includes(kw))"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "ASSURANCE DECES VIE ENTIERE",
+    "raison": "Protection décès permanente avec capital constant",
+    "condition": "(data) => data.age <= 50"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "ASSURANCE HOMME CLEF",
+    "raison": "Protection pour dirigeants et cadres essentiels",
+    "condition": "(data) => ['DIRECTEUR','MANAGER','PDG','CHEF','RESPONSABLE','CADRE','INGENIEUR','PRESIDENT','GÉRANT'].some(kw => (data.LIB_PROFESSION || '').includes(kw))"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "ASSURANCE DECES VIE ENTIERE",
+    "raison": "Protection longue durée pour cadres supérieurs",
+    "condition": "(data) => (data.LIB_SECTEUR_ACTIVITE || '').includes('CADRES ET PROFESSIONS INTELLECTUELLES SUPÉRIEURES')"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "RENTE EDUCATION",
+    "raison": "Garantie des frais d'éducation des enfants",
+    "condition": "(data) => ['MARIE','DIVORCE'].includes((data.SITUATION_FAMILIALE || '').toUpperCase()) && data.age >= 30 && data.age <= 45"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "RENTE EDUCATION",
+    "raison": "Épargne éducation pour professions éducatives",
+    "condition": "(data) => ['ENSEIGNANT','PROFESSEUR','ÉDUCATEUR','FORMATEUR'].some(kw => (data.LIB_PROFESSION || '').includes(kw))"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "DHAMEN",
+    "raison": "Couverture crédit travailleurs indépendants",
+    "condition": "(data) => { const prof = data.LIB_PROFESSION || ''; const exist = data.produits_existants || []; return ([ 'COMMERCANT','COMMERCANT(E)','ARTISAN','AGRICULTEUR','MÉDECINS LIBÉRAUX GÉNÉRALISTES','MÉDECINS LIBÉRAUX SPÉCIALISTES','AVOCATS','ARCHITECTES LIBÉRAUX','PHARMACIENS LIBÉRAUX','INFIRMIERS LIBÉRAUX','NOTAIRES','EXPERT COMPTABLE','CONSULTANT','COURTIER','GÉRANT','TRANSPORTEURS INDÉPENDANTS','AGENTS IMMOBILIERS INDÉPENDANTS' ].includes(prof) || prof.includes('ARTISANS') || prof.includes('LIBÉRAUX') || prof.includes('INDÉPENDANTS')) && !exist.includes('DHAMEN'); }"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "DHAMEN RETRAITE",
+    "raison": "Contrat retraite complémentaire pour secteurs stables ou professions intellectuelles",
+    "condition": "(data) => { const sec = (data.LIB_SECTEUR_ACTIVITE || '').toUpperCase(); const prof = (data.LIB_PROFESSION || '').toUpperCase(); const exist = data.produits_existants || []; return ([ 'ADMINISTRATION PUBLIQUE','ÉDUCATION','SANTÉ ET ACTION SOCIALE','INTERMÉDIATION FINANCIÈRE','POSTES ET TÉLÉCOMMUNICATIONS'].includes(sec) || ['CADRES ET PROFESSIONS INTELLECTUELLES SUPÉRIEURES','PROFESSIONS INTERMÉDIAIRES','ARTISANS, COMMERÇANTS ET CHEFS D ENTREPRISE'].includes(prof)) && !exist.includes('DHAMEN RETRAITE') && data.age <= 65; }"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "DHAMEN COMPTE",
+    "raison": "Couverture décès/hospitalisation pour professions à risque ou manuelles",
+    "condition": "(data) => { const sec = (data.LIB_SECTEUR_ACTIVITE || '').toUpperCase(); const prof = (data.LIB_PROFESSION || '').toUpperCase(); const exist = data.produits_existants || []; return ([ 'CONSTRUCTION','TRANSPORTS TERRESTRES','INDUSTRIE CHIMIQUE','MÉTALLURGIE','EXTRACTION DE MINERAIS MÉTALLIQUES'].includes(sec) || ['OUVRIERS','CHAUFFEUR','CONDUCTEURS DE VÉHICULE ROUTIER','MÉCANICIENS','SERVEURS'].includes(prof)) && !exist.includes('DHAMEN COMPTE') && data.age <= 60; }"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "ASSURANCE DECES VIE ENTIERE",
+    "raison": "Protection permanente chefs de famille",
+    "condition": "(data) => ['MARIE','DIVORCE'].includes((data.SITUATION_FAMILIALE || '').toUpperCase())"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "RENTE EDUCATION",
+    "raison": "Garantie éducation parents 30-45 ans",
+    "condition": "(data) => data.age >= 30 && data.age <= 45 && (data.SITUATION_FAMILIALE || '').toUpperCase() === 'MARIE'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "ASSURANCE HOMME CLEF",
+    "raison": "Protection dirigeants PME",
+    "condition": "(data) => (data.LIB_PROFESSION || '').includes('DIRIGEANT') && (data.LIB_SECTEUR_ACTIVITE || '') !== 'ADMINISTRATION PUBLIQUE'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "INDEMNITE DE DEPART A LA RETRAITE",
+    "raison": "Première souscription d'un contrat collectif de capitalisation retraite",
+    "condition": "(data) => data.type_client === 'moral' && !['AGRICULTURE', 'BTP'].includes(data.LIB_SECTEUR_ACTIVITE)"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "INDEMNITE DE DEPART A LA RETRAITE",
+    "raison": "Renouvellement annuel du contrat collectif",
+    "condition": "(data) => ((new Date().getFullYear() - new Date(data.EFFET_CONTRAT).getFullYear()) >= 1 && data.LIB_ETAT_CONTRAT === 'ACTIF' && data.statut_paiement === 'A_JOUR')"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "INDEMNITE DE DEPART A LA RETRAITE",
+    "raison": "Transfert vers notre compagnie après 5 ans chez concurrent",
+    "condition": "(data) => ('EFFET_CONTRAT' in data && (new Date().getFullYear() - new Date(data.EFFET_CONTRAT).getFullYear()) >= 5 && parseFloat(data.Capital_assure || 0) > 0 && (data.LIB_ETAT_CONTRAT || '').toUpperCase() === 'ACTIF')"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "INDEMNITE DE DEPART A LA RETRAITE",
+    "raison": "Rachat total du capital après maturité",
+    "condition": "(data) => ('DATE_EXPIRATION' in data && new Date(data.DATE_EXPIRATION) < new Date() && parseFloat(data.Capital_assure || 0) > 0)"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "VIE BANCASSURANCE ASSUR SENIOR",
+    "raison": "Rachat total après régularisation fiscale",
+    "condition": "(data) => (data.LIB_ETAT_CONTRAT || '').toUpperCase() === 'ACTIF' && (data.age || 0) >= 55 && ['RETRAITE','CADRE RETRAITE','FONCTIONNAIRE RETRAITE'].includes((data.LIB_PROFESSION || '').toUpperCase()) && !['BTP','INDUSTRIE LOURDE','TRAVAIL EN HAUTEUR'].includes((data.LIB_SECTEUR_ACTIVITE || '').toUpperCase())"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "VIE BANCASSURANCE ASSUR SENIOR",
+    "raison": "Couverture décès/maladies graves/perte d'autonomie pour seniors",
+    "condition": "(data) => (data.age >= 55 && data.age <= 75) && ['RETRAITE','CADRE RETRAITE','FONCTIONNAIRE RETRAITE',''].includes((data.LIB_PROFESSION || '').toUpperCase()) && !['BTP','INDUSTRIE LOURDE','TRAVAIL EN HAUTEUR'].includes((data.LIB_SECTEUR_ACTIVITE || '').toUpperCase())"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "CREDITS FONAPRA FOPRODI (AS)",
+    "raison": "Couverture décès pour crédits agricoles",
+    "condition": "(data) => (['AGRICULTEUR','ELEVEUR'].some(k => (data.LIB_PROFESSION || '').toUpperCase().includes(k)) || (data.LIB_SECTEUR_ACTIVITE || '').toUpperCase().includes('AGRICULTURE'))"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "CREDITS COMMERCIAUX (AS)",
+    "raison": "Couverture décès pour entreprises commerciales",
+    "condition": "(data) => ['COMMERCIAL','COMMERCE','VENTE','MAGASIN'].some(k => (data.LIB_ACTIVITE || '').toUpperCase().includes(k)) && data.statut_paiement === 'A_JOUR'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "TEMPORAIRE DECES - COLLECTIVE - (AS)",
+    "raison": "Couverture collective pour employés",
+    "condition": "(data) => data.type_client === 'moral' && data.LIB_ETAT_CONTRAT === 'ACTIF'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "DECES",
+    "produit": "CREDITS-COLLECTIFS -B.H- (AS)",
+    "raison": "Couverture crédits pour secteur bancaire",
+    "condition": "(data) => (data.LIB_SECTEUR_ACTIVITE || '').toUpperCase() === 'BANQUE' && parseFloat(data.Capital_assure || 0) > 0"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "VIE",
+    "produit": "ASSURANCE MIXTE VIE",
+    "raison": "Option exonération de primes en cas d'incapacité",
+    "condition": "(data) => ['BTP','INDUSTRIE','TRANSPORT'].some(secteur => data.LIB_SECTEUR_ACTIVITE.includes(secteur))"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "VIE",
+    "produit": "MIXTE IMPURE A CARACTERE VIE 50 * 100 (AS)",
+    "raison": "Produit mixte dominante vie",
+    "condition": "(data) => ['MARIE','CELIBATAIRE'].includes((data.SITUATION_FAMILIALE || '').toUpperCase()) && (data.contrats_actifs || []).some(c => c.Capital_assure >= 25000)"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "VIE",
+    "produit": "MIXTE IMPURE A CARACTERE DECES 100 * 50 (AS)",
+    "raison": "Produit mixte dominante décès",
+    "condition": "(data) => ['MARIE','DIVORCE'].includes((data.SITUATION_FAMILIALE || '').toUpperCase()) && (data.contrats_actifs || []).some(c => c.Capital_assure >= 50000)"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "VIE",
+    "produit": "MIXTE IMPURE A CARACTERE DECES 100 * 25 (AS)",
+    "raison": "Produit mixte forte dominante décès",
+    "condition": "(data) => ['CADRE','DIRECTEUR'].includes((data.LIB_PROFESSION || '').toUpperCase()) && (data.contrats_actifs || []).some(c => c.Capital_assure >= 100000)"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON",
+    "raison": "Contrat individuel 18-60 ans hors secteurs à risque",
+    "condition": "(data) => { const age = new Date().getFullYear() - new Date(data.DATE_NAISSANCE).getFullYear(); return age >= 18 && age <= 60 && !['BTP','AGRICULTURE'].includes(data.LIB_SECTEUR_ACTIVITE)}"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON",
+    "raison": "Transfert produit retraite après 3 ans",
+    "condition": "(data) => (data.produits_existants || []).some(p => p.includes('RETRAITE')) && (new Date().getFullYear() - new Date(data.EFFET_CONTRAT || new Date()).getFullYear()) >= 3"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON (AS)",
+    "raison": "Version collective du produit retraite HORIZON",
+    "condition": "(data) => data.type_client === 'MORALE' && !['BTP','AGRICULTURE'].includes((data.LIB_SECTEUR_ACTIVITE || '').toUpperCase()) && (data.age || 0) <= 60"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON+",
+    "raison": "Contrat collectif entreprises hors BTP/agriculture",
+    "condition": "(data) => data.type_client === 'MORALE'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON+",
+    "raison": "Renouvellement après 5 ans avec capital > 100k DT",
+    "condition": "(data) => (new Date().getFullYear() - new Date(data.EFFET_CONTRAT || new Date()).getFullYear()) >= 5 && (data.Capital_assure || 0) > 100000 && (data.LIB_ETAT_CONTRAT || '').toUpperCase() === 'ACTIF'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "ASSURANCE VIE COMPLEMENT RETRAITE - HORIZON+ (AS)",
+    "raison": "Version collective premium du produit retraite",
+    "condition": "(data) => data.type_client === 'MORALE' && (data.Capital_assure || 0) >= 100000 && (new Date().getFullYear() - new Date(data.EFFET_CONTRAT || new Date()).getFullYear()) >= 3"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "HORIZON (AMICALE SOTUMAG)",
+    "raison": "Produit retraite collectif SOTUMAG",
+    "condition": "(data) => data.LIB_ACTIVITE === 'SOTUMAG'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "CAPITALISATION",
+    "produit": "HORIZON (AMICALE TELEPERFORMANCE)",
+    "raison": "Produit retraite collectif TELEPERFORMANCE",
+    "condition": "(data) => data.LIB_ACTIVITE === 'TELEPERFORMANCE'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "MALADIE",
+    "produit": "GROUPE-MALADIE",
+    "raison": "Assurance santé collective pour les entreprises",
+    "condition": "(data) => data.type_client === 'moral'"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "MALADIE",
+    "produit": "GROUPE-MALADIE",
+    "raison": "Secteurs à fort besoin de couverture santé",
+    "condition": "(data) => data.type_client === 'moral' && ['SANTÉ ET ACTION SOCIALE','ÉDUCATION','ADMINISTRATION PUBLIQUE'].includes(data.LIB_SECTEUR_ACTIVITE || '')"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "CREDIT STOCK",
+    "raison": "Assurance crédit pour industries et commerces",
+    "condition": "(data) => ['INDUSTRIE','COMMERCE','STOCKAGE','LOGISTIQUE'].some(kw => (data.LIB_ACTIVITE || '').toUpperCase().includes(kw)) && (data.Capital_assure || 0) >= 50000"
+  },
+  {
+    "branche": "VIE",
+    "sous_branche": "BANCASSURANCE",
+    "produit": "CARTES BANCAIRES",
+    "raison": "Assurance liée aux cartes bancaires",
+    "condition": "(data) => ['BANQUE','ASSURANCE','FINANCIERE'].some(kw => (data.LIB_SECTEUR_ACTIVITE || '').includes(kw)) && data.LIB_ETAT_CONTRAT === 'ACTIF'"
+  }
+  ,
+   {
+    "branche": "ENGINEERING",
+    "sous_branche": "TOUS RISQUES MONTAGE",
+    "produit": "TOUS RISQUES MONTAGE",
+    "raison": "Client est une personne morale et son secteur d'activité est 'CONSTRUCTION', 'TRAVAIL DU BOIS', 'INDUSTRIES ALIMENTAIRES', ou 'INDUSTRIES MÉCANIQUES ET MÉTALLURGIQUES'",
+    "condition": "(data) => data.REF_PERSONNE && data.LIB_SECTEUR_ACTIVITE && ['CONSTRUCTION', 'TRAVAIL DU BOIS', 'INDUSTRIES ALIMENTAIRES', 'INDUSTRIES MÉCANIQUES ET MÉTALLURGIQUES'].includes(data.LIB_SECTEUR_ACTIVITE)"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "TOUS RISQUES MONTAGE",
+    "produit": "TOUS RISQUES MONTAGE",
+    "raison": "Le client a un besoin de couverture pour des biens de grande valeur",
+    "condition": "(data) => data.Capital_assure > 1000000"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "TOUS RISQUES MONTAGE",
+    "produit": "TOUS RISQUES MONTAGE",
+    "raison": "Le client n'a pas de contrat actif de type 'TOUS RISQUES MONTAGE'",
+    "condition": "(data) => !data.contrats || !data.contrats.some(c => c.LIB_PRODUIT === 'TOUS RISQUES MONTAGE')"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "TOUS RISQUES MONTAGE",
+    "produit": "TOUS RISQUES MONTAGE",
+    "raison": "Le client a eu un sinistre lié à la 'négligence', une 'mauvaise exécution des travaux' ou une 'erreur de conception'",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['NÉGLIGENCE', 'MAUVAISE EXÉCUTION DES TRAVAUX', 'ERREUR DE CONCEPTION'].includes(data.LIB_TYPE_SINISTRE.toUpperCase())"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "TOUS RISQUES MONTAGE",
+    "produit": "TOUS RISQUES MONTAGE",
+    "raison": "Le client a des contrats de courte durée (moins d'un an)",
+    "condition": "(data) => data.EFFET_CONTRAT && data.DATE_EXPIRATION && (new Date(data.DATE_EXPIRATION) - new Date(data.EFFET_CONTRAT)) / (1000 * 60 * 60 * 24) < 365"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "RESPONSABILITE DECENNALE",
+    "produit": "RESPONSABILITE DECENNALE",
+    "raison": "Le client est dans le secteur de la construction",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['CONSTRUCTION', 'INGÉNIERIE', 'TRAVAUX PUBLICS'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k.toUpperCase()))"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "RESPONSABILITE DECENNALE",
+    "produit": "RESPONSABILITE DECENNALE",
+    "raison": "Le client a des projets à long terme (plus de 5 ans)",
+    "condition": "(data) => data.EFFET_CONTRAT && data.DATE_EXPIRATION && (new Date(data.DATE_EXPIRATION) - new Date(data.EFFET_CONTRAT)) / (1000 * 60 * 60 * 24 * 365) > 5"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "RESPONSABILITE DECENNALE",
+    "produit": "RESPONSABILITE DECENNALE",
+    "raison": "Le client a eu des sinistres liés au gros-œuvre ou au second-œuvre",
+    "condition": "(data) => (data.LIB_BRANCHE && ['GROS-ŒUVRE', 'SECOND-ŒUVRE'].includes(data.LIB_BRANCHE.toUpperCase())) || (data.LIB_SOUS_BRANCHE && ['GROS-ŒUVRE', 'SECOND-ŒUVRE'].includes(data.LIB_SOUS_BRANCHE.toUpperCase()))"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "RESPONSABILITE DECENNALE",
+    "produit": "RESPONSABILITE DECENNALE",
+    "raison": "Un sinistre a eu lieu après le début du contrat",
+    "condition": "(data) => data.DATE_SURVENANCE && data.DATE_OUVERTURE && new Date(data.DATE_SURVENANCE) > new Date(data.DATE_OUVERTURE)"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "ENGINS DE CHANTIERS",
+    "produit": "ENGINS DE CHANTIERS",
+    "raison": "Le client est une personne morale avec activité liée aux travaux publics, bâtiment, extraction ou industrie",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['TRAVAUX PUBLICS', 'BÂTIMENT', 'EXTRACTION DE MATÉRIAUX', 'INDUSTRIE'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k.toUpperCase()))"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "ENGINS DE CHANTIERS",
+    "produit": "ENGINS DE CHANTIERS",
+    "raison": "Le client a un sinistre lié à des 'accidents fortuits', 'incendie', 'explosion', 'vol', ou des 'phénomènes naturels'",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['ACCIDENTS FORTUITS', 'INCENDIE', 'EXPLOSION', 'VOL', 'OURAGANS', 'TEMPÊTES', 'INONDATIONS'].some(k => data.LIB_TYPE_SINISTRE.toUpperCase().includes(k.toUpperCase()))"
+  },
+  {
+    "branche": "ENGINEERING",
+    "sous_branche": "ENGINS DE CHANTIERS",
+    "produit": "ENGINS DE CHANTIERS",
+    "raison": "Le client a des sinistres liés à des 'pannes', 'bris interne' ou 'usure' sans contrat actif",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['PANNES', 'BRIS INTERNE', 'USURE'].some(k => data.LIB_TYPE_SINISTRE.toUpperCase().includes(k.toUpperCase())) && (!data.contrats || !data.contrats.some(c => c.LIB_PRODUIT === 'ENGINS DE CHANTIERS'))"
+  }
+,
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE AERIEN",
+    "produit": "POLICE AU VOYAGE(FACULTE AERIEN)",
+    "raison": "L'activité du client implique le transport, la logistique, l'import/export ou le commerce international par voie aérienne",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['TRANSPORT', 'LOGISTIQUE', 'IMPORT', 'EXPORT', 'COMMERCE INTERNATIONAL'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE AERIEN",
+    "produit": "POLICE AU VOYAGE(FACULTE AERIEN)",
+    "raison": "Le client a un contrat existant lié à des marchandises ou à un transport aérien",
+    "condition": "(data) => data.LIB_PRODUIT && (data.LIB_PRODUIT.toUpperCase().includes('AÉRIEN') || data.LIB_PRODUIT.toUpperCase().includes('AIR'))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE AERIEN",
+    "produit": "POLICE AU VOYAGE(FACULTE AERIEN)",
+    "raison": "Le client a eu un sinistre où le LIB_BRANCHE est 'TRANSPORT' et le LIB_TYPE_SINISTRE est 'DOMMAGES' ou 'PERTES'",
+    "condition": "(data) => data.LIB_BRANCHE === 'TRANSPORT' && data.LIB_TYPE_SINISTRE && ['DOMMAGES', 'PERTES'].includes(data.LIB_TYPE_SINISTRE.toUpperCase())"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE TERRESTRE",
+    "produit": "POLICE AU VOYAGE(FACULTE TERRESTRE)",
+    "raison": "L'activité du client implique le transport routier, la logistique ou le commerce national/international par voie terrestre",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['TRANSPORT', 'LOGISTIQUE', 'COMMERCE'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE TERRESTRE",
+    "produit": "POLICE AU VOYAGE(FACULTE TERRESTRE)",
+    "raison": "Le client a des sinistres liés au transport terrestre",
+    "condition": "(data) => data.LIB_BRANCHE === 'TRANSPORT' || (data.LIB_SOUS_BRANCHE && data.LIB_SOUS_BRANCHE.toUpperCase().includes('TERRESTRE'))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE TERRESTRE",
+    "produit": "POLICE AU VOYAGE(FACULTE TERRESTRE)",
+    "raison": "Un sinistre a eu lieu et LIB_TYPE_SINISTRE est 'VOL', 'INCENDIE', 'ACCIDENT', 'PERTE' ou 'DOMMAGES' pendant le transport",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['VOL', 'INCENDIE', 'ACCIDENT', 'PERTE', 'DOMMAGES'].some(k => data.LIB_TYPE_SINISTRE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE MARITIME",
+    "produit": "POLICE AU VOYAGE(FACULTE MARITIME)",
+    "raison": "L'activité du client implique le commerce international ou l'import/export par voie maritime",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['TRANSPORT MARITIME', 'LOGISTIQUE INTERNATIONALE', 'IMPORTATION', 'EXPORTATION'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT FACULTE MARITIME",
+    "produit": "POLICE AU VOYAGE(FACULTE MARITIME)",
+    "raison": "Le client a des sinistres liés au transport maritime",
+    "condition": "(data) => data.LIB_BRANCHE === 'TRANSPORT' && data.OBSERVATION_SINISTRE && data.OBSERVATION_SINISTRE.toUpperCase().includes('MARITIME')"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT CORPS DE PECHE",
+    "produit": "POLICE AU VOYAGE(CORPS DE PECHE)",
+    "raison": "L'activité du client est liée à la pêche, aux activités maritimes ou à l'aquaculture",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['PÊCHE', 'AQUACULTURE', 'ACTIVITÉS MARITIMES'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT CORPS DE PECHE",
+    "produit": "POLICE AU VOYAGE(CORPS DE PECHE)",
+    "raison": "Le client a un sinistre lié à des événements comme 'tempête', 'naufrage', 'échouement', 'abordage' ou 'incendie' pour un navire",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['TEMPÊTE', 'NAUFRAGE', 'ÉCHOUEMENT', 'ABORDAGE', 'INCENDIE'].some(k => data.LIB_TYPE_SINISTRE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT CORPS DE PECHE",
+    "produit": "POLICE AU VOYAGE(CORPS DE PECHE)",
+    "raison": "Le client a un sinistre indiquant une faute du Capitaine, de l'équipage, ou un vice caché",
+    "condition": "(data) => (data.LIB_ETAT_SINISTRE && (data.LIB_ETAT_SINISTRE.toUpperCase().includes('FAUTE') || data.LIB_ETAT_SINISTRE.toUpperCase().includes('VICE CACHÉ'))) || (data.OBSERVATION_SINISTRE && (data.OBSERVATION_SINISTRE.toUpperCase().includes('FAUTE') || data.OBSERVATION_SINISTRE.toUpperCase().includes('VICE CACHÉ')))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT CORPS DE TOUT NAVIRES",
+    "produit": "POLICE AU VOYAGE(CORPS DE TOUT NAVIRES)",
+    "raison": "L'activité du client est liée au transport maritime, aux armateurs, ou à la navigation commerciale",
+    "condition": "(data) => data.LIB_SECTEUR_ACTIVITE && ['TRANSPORT MARITIME', 'ARMATEURS', 'NAVIGATION COMMERCIALE'].some(k => data.LIB_SECTEUR_ACTIVITE.toUpperCase().includes(k))"
+  },
+  {
+    "branche": "TRANSPORT",
+    "sous_branche": "TRANSPORT CORPS DE TOUT NAVIRES",
+    "produit": "POLICE AU VOYAGE(CORPS DE TOUT NAVIRES)",
+    "raison": "Un sinistre est lié à des événements maritimes et ne concerne pas un navire de pêche ou une embarcation de plaisance",
+    "condition": "(data) => data.LIB_TYPE_SINISTRE && ['TEMPÊTE', 'NAUFRAGE', 'ÉCHOUEMENT', 'ABORDAGE', 'INCENDIE'].some(k => data.LIB_TYPE_SINISTRE.toUpperCase().includes(k)) && (!data.LIB_SOUS_BRANCHE || !data.LIB_SOUS_BRANCHE.toUpperCase().includes('PÊCHE')) && (!data.LIB_PRODUIT || !data.LIB_PRODUIT.toUpperCase().includes('PLAISANCE'))"
+  }
+]
+
